@@ -1,16 +1,27 @@
-package org.example.ui.model.json;
+package org.example.be.model.json;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.example.ui.model.entity.ImageClassification;
+import org.example.be.model.entity.ImageClassification;
 
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 
 @Data
-public class ImageClassificationResponse {
+public class ImageClassificationResponse implements Serializable {
 
+    private static final long serialVersionUID = -8874756750139294954L;
+
+    @JsonProperty(value = "url")
     private final String url;
+
+    @JsonProperty(value = "name")
     private final String name;
+
+    @JsonProperty(value = "created_at")
     private final String createdAt;
+
+    @JsonProperty(value = "status")
     private final String status;
 
     public ImageClassificationResponse(ImageClassification classification) {

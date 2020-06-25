@@ -1,4 +1,4 @@
-package org.example.ui.model.entity;
+package org.example.be.model.entity;
 
 import lombok.Data;
 
