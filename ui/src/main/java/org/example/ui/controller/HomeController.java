@@ -3,6 +3,12 @@ package org.example.ui.controller;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.qute.api.ResourcePath;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.example.ui.service.ImageClassificationService;
 
 import javax.inject.Inject;
@@ -14,16 +20,24 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public class HomeController {
 
-    @ResourcePath("index.html")
+    private final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+
+    @ResourcePath(value = "index.html")
     Template template;
 
     @Inject
+    @RestClient
     ImageClassificationService imageClassificationService;
+
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance index() {
-        return template.data("classifications", imageClassificationService.getImageClassifications());
+    @Counted(name = "indexCount", description = "How many render() calls have been performed")
+    @Timed(name = "indexTime", description = "How long render() call takes to perform", unit = MetricUnits.MILLISECONDS)
+    public TemplateInstance render() {
+        LOGGER.info("render() method called");
+
+        return template.data("classifications", imageClassificationService.readAll());
     }
 
 }
