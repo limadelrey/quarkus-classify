@@ -2,13 +2,13 @@ package org.example.be.model.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.example.be.model.entity.ImageClassification;
+import org.example.be.model.entity.Classification;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 
 @Data
-public class ImageClassificationResponse implements Serializable {
+public class ClassificationResponse implements Serializable {
 
     private static final long serialVersionUID = -8874756750139294954L;
 
@@ -24,11 +24,11 @@ public class ImageClassificationResponse implements Serializable {
     @JsonProperty(value = "status")
     private final String status;
 
-    public ImageClassificationResponse(ImageClassification classification) {
-        this.url = classification.getUrl();
+    public ClassificationResponse(Classification classification) {
+        this.url = classification.getImageMetadata().getUrl();
         this.name = classification.getName();
-        this.createdAt = classification.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.status = classification.getStatus().name();
+        this.createdAt = classification.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.status = classification.getClassificationResult().getStatus().name();
     }
 
 }

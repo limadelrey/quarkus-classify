@@ -1,6 +1,6 @@
 package org.example.be.model.entity;
 
-public enum Status {
+public enum StatusEnum {
 
     PENDING,
     ACTIVE,

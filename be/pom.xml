@@ -21,6 +21,18 @@
             <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-hibernate-orm-panache -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-panache</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-jdbc-postgresql -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-postgresql</artifactId>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-health -->
         <dependency>
             <groupId>io.quarkus</groupId>

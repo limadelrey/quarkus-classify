@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  quarkus-hackaton-be-db:
+    container_name: quarkus-hackaton-be-db
+    image: debezium/postgres:12-alpine
+    environment:
+      POSTGRES_DB: quarkus-hackaton
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+#  quarkus-hackaton-be-app:
+#    container_name: quarkus-hackaton-be-app
+#    image: quarkus/quarkus-hackaton-be
+#    build:
+#      context: .
+#      dockerfile: src/main/docker/Dockerfile.jvm
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - quarkus-hackaton-be-db
+
+networks:
+  default:
+    external:
+      name: quarkus-hackaton-network
