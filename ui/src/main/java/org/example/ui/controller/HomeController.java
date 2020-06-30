@@ -9,7 +9,7 @@ import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.example.ui.service.ImageClassificationService;
+import org.example.ui.service.ClassificationService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -27,8 +27,7 @@ public class HomeController {
 
     @Inject
     @RestClient
-    ImageClassificationService imageClassificationService;
-
+    ClassificationService classificationService;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -37,7 +36,7 @@ public class HomeController {
     public TemplateInstance render() {
         LOGGER.info("render() method called");
 
-        return template.data("classifications", imageClassificationService.readAll());
+        return template.data("classifications", classificationService.readAll());
     }
 
 }
