@@ -4,6 +4,7 @@ public enum StatusEnum {
 
     PENDING,
     ACTIVE,
-    ERROR
+    ERROR,
+    CANCELED
 
 }

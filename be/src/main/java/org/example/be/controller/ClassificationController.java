@@ -55,4 +55,16 @@ public class ClassificationController implements ClassificationRouter {
                 .build();
     }
 
+    @Counted(name = "deleteCount", description = "How many delete() calls have been performed")
+    @Timed(name = "deleteTime", description = "How long delete() call takes to perform", unit = MetricUnits.MILLISECONDS)
+    public Response delete(Long id) {
+        LOGGER.info("delete() method called");
+
+        classificationService.delete(id);
+
+        return Response
+                .noContent()
+                .build();
+    }
+
 }

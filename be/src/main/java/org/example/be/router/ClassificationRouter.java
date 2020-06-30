@@ -10,20 +10,24 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.example.be.model.json.ClassificationRequest;
 import org.example.be.model.json.ClassificationResponse;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Tag(name = "BE API", description = "Endpoints regarding image classification")
-@Consumes(APPLICATION_JSON)
-@Produces(APPLICATION_JSON)
 @Path("/api/v1/image-classification")
 public interface ClassificationRouter {
 
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Read all image classifications")
     @APIResponses({
             @APIResponse(
@@ -41,6 +45,8 @@ public interface ClassificationRouter {
     Response readAll();
 
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
     @Operation(summary = "Read one image classification")
     @APIResponses({
@@ -69,6 +75,8 @@ public interface ClassificationRouter {
     Response readOne(@PathParam("id") Long id);
 
     @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Create image classification")
     @APIResponses({
             @APIResponse(
@@ -78,8 +86,8 @@ public interface ClassificationRouter {
             ),
             @APIResponse(
                     responseCode = "400",
-                    name = "invalid",
-                    description = "Image classification is invalid"
+                    name = "error",
+                    description = "Bad request"
             ),
             @APIResponse(
                     responseCode = "500",
@@ -90,6 +98,33 @@ public interface ClassificationRouter {
     Response create(@RequestBody(
             description = "Image classification request",
             required = true,
-            content = @Content(schema = @Schema(implementation = ClassificationRequest.class))) @Valid ClassificationRequest request);
+            content = @Content(schema = @Schema(implementation = ClassificationRequest.class))) @Valid @MultipartForm ClassificationRequest request);
 
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    @Operation(summary = "Delete one image classification")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "201",
+                    name = "success",
+                    description = "Image classification deleted"
+            ),
+            @APIResponse(
+                    responseCode = "400",
+                    name = "error",
+                    description = "Bad request"
+            ),
+            @APIResponse(
+                    responseCode = "404",
+                    name = "not found",
+                    description = "Image classification not found"
+            ),
+            @APIResponse(
+                    responseCode = "500",
+                    name = "timeout",
+                    description = "Internal Server Error"
+            )
+    })
+    Response delete(@PathParam("id") Long id);
 }

@@ -12,11 +12,14 @@ public class ClassificationResponse implements Serializable {
 
     private static final long serialVersionUID = -8874756750139294954L;
 
-    @JsonProperty(value = "url")
-    private final String url;
+    @JsonProperty(value = "id")
+    private final Long id;
 
     @JsonProperty(value = "name")
     private final String name;
+
+    @JsonProperty(value = "description")
+    private final String description;
 
     @JsonProperty(value = "created_at")
     private final String createdAt;
@@ -24,11 +27,16 @@ public class ClassificationResponse implements Serializable {
     @JsonProperty(value = "status")
     private final String status;
 
+    @JsonProperty(value = "url")
+    private final String url;
+
     public ClassificationResponse(Classification classification) {
-        this.url = classification.getImageMetadata().getUrl();
+        this.id = classification.getId();
         this.name = classification.getName();
-        this.createdAt = classification.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.description = classification.getDescription();
+        this.createdAt = classification.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.status = classification.getClassificationResult().getStatus().name();
+        this.url = classification.getImageMetadata().getUrl();
     }
 
 }
