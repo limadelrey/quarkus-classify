@@ -1,4 +1,4 @@
-package org.example.be.controller;
+package org.example.be.controller.interceptor;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.logging.Logger;

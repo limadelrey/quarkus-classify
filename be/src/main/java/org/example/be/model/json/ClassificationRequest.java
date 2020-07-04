@@ -1,6 +1,7 @@
 package org.example.be.model.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
@@ -10,7 +11,10 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.core.MediaType;
 import java.io.InputStream;
 
+import static org.example.be.model.json.ClassificationRequest.*;
+
 @Data
+@JsonPropertyOrder({CLASSIFICATION_NAME_FIELD, CLASSIFICATION_DESCRIPTION_FIELD, FILE_FIELD, FILE_FIELD, FILE_NAME_FIELD, MIME_TYPE_FIELD})
 public class ClassificationRequest {
 
     private static final String NOT_NULL_MESSAGE = " cannot be null";
@@ -31,7 +35,7 @@ public class ClassificationRequest {
     @FormParam(CLASSIFICATION_DESCRIPTION_FIELD)
     @PartType(MediaType.TEXT_PLAIN)
     @JsonProperty(CLASSIFICATION_DESCRIPTION_FIELD)
-    @NotNull(message = CLASSIFICATION_DESCRIPTION_FIELD + NOT_NULL_MESSAGE)
+    @NotBlank(message = CLASSIFICATION_DESCRIPTION_FIELD + NOT_BLANK_MESSAGE)
     private String classificationDescription;
 
     @FormParam(FILE_FIELD)

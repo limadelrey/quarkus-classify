@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Data
@@ -19,9 +20,8 @@ public class Classification {
     public static final String CLASSIFICATION_RESULT_ID_FIELD = "classification_result_id";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = ID_FIELD)
-    private Long id;
+    private UUID id;
 
     @Column(name = NAME_FIELD)
     private String name;
@@ -40,11 +40,13 @@ public class Classification {
     @JoinColumn(name = CLASSIFICATION_RESULT_ID_FIELD)
     private ClassificationResult classificationResult;
 
-    public Classification(String name,
+    public Classification(UUID id,
+                          String name,
                           String description,
                           LocalDateTime createdAt,
                           ImageMetadata imageMetadata,
                           ClassificationResult classificationResult) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;

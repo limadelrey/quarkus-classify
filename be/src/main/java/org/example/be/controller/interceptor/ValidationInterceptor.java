@@ -1,4 +1,4 @@
-package org.example.be.controller;
+package org.example.be.controller.interceptor;
 
 import org.example.be.model.json.ErrorResponse;
 

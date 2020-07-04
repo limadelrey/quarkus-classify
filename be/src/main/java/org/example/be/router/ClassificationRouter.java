@@ -19,9 +19,11 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.UUID;
+
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Tag(name = "BE API", description = "Endpoints regarding image classification")
+@Tag(name = "Image classification API", description = "Endpoints regarding image classification")
 @Path("/api/v1/image-classification")
 public interface ClassificationRouter {
 
@@ -72,7 +74,7 @@ public interface ClassificationRouter {
                     description = "Internal Server Error"
             )
     })
-    Response readOne(@PathParam("id") Long id);
+    Response readOne(@PathParam("id") UUID id);
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -126,5 +128,5 @@ public interface ClassificationRouter {
                     description = "Internal Server Error"
             )
     })
-    Response delete(@PathParam("id") Long id);
+    Response delete(@PathParam("id") UUID id);
 }

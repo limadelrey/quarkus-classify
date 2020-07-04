@@ -18,12 +18,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ClassificationService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ClassificationService.class);
+
+    @Inject
+    S3Service s3Service;
 
     @Inject
     ClassificationRepository classificationRepository;
@@ -41,41 +46,64 @@ public class ClassificationService {
         /*return getStaticListWithClassifications()
                 .stream()
                 .map(ClassificationResponse::new)
-                .limit(5)
                 .collect(Collectors.toList());*/
     }
 
-    public ClassificationResponse getById(Long id) {
+    public ClassificationResponse getById(UUID id) {
         LOGGER.info("getById() method called");
 
         final Classification classification = classificationRepository.findById(id);
+
+        if (classification == null) {
+            throw new NoSuchElementException("No image classification with id " + id);
+        }
 
         return new ClassificationResponse(classification);
     }
 
     @Transactional
-    public Long insert(ClassificationRequest request) {
+    public UUID insert(ClassificationRequest request) {
         LOGGER.info("insert() method called");
 
+        final UUID id = UUID.randomUUID();
+
+        // Upload to S3 bucket
+        final String url = s3Service.upload(id, request.getFile(), request.getMimeType());
+
+        // Save metadata on database
+        saveMetadataOnDatabase(request, id, url);
+
+        // Publish outbox event
+
+        return id;
+    }
+
+    @Transactional
+    public void delete(UUID id) {
+        final Classification classification = classificationRepository.findById(id);
+
+        if (classification == null) {
+            throw new NoSuchElementException("No image classification with id " + id);
+        }
+
+        classification.getClassificationResult().setStatus(StatusEnum.CANCELED);
+
+        classificationRepository.persist(classification);
+    }
+
+    //
+
+    private void saveMetadataOnDatabase(ClassificationRequest request,
+                                        UUID id,
+                                        String url) {
         // Create image metadata entity
-        final ImageMetadata imageMetadata;
-        imageMetadata = new ImageMetadata(request.getFileName(), getSizeFromFile(request.getFile()), request.getMimeType(), null);
+        final ImageMetadata imageMetadata = new ImageMetadata(request.getFileName(), getSizeFromFile(request.getFile()), request.getMimeType(), url);
 
         // Create classification result entity
         final ClassificationResult classificationResult = new ClassificationResult(StatusEnum.PENDING);
 
         // Create classification entity
-        final Classification classification = new Classification(request.getClassificationName(), request.getClassificationDescription(), LocalDateTime.now(), imageMetadata, classificationResult);
-
-        classificationRepository.persist(classification);
-
-        return classification.getId();
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        final Classification classification = classificationRepository.findById(id);
-        classification.getClassificationResult().setStatus(StatusEnum.CANCELED);
+        final Classification classification = new Classification(id, request.getClassificationName(), request.getClassificationDescription(), LocalDateTime.now(), imageMetadata, classificationResult);
 
         classificationRepository.persist(classification);
     }
@@ -91,6 +119,7 @@ public class ClassificationService {
     private List<Classification> getStaticListWithClassifications() {
         return List.of(
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #1",
                         "",
                         LocalDateTime.of(2013, 10, 4, 16, 52, 43),
@@ -98,6 +127,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ACTIVE)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #2",
                         "",
                         LocalDateTime.of(2014, 8, 5, 10, 12, 24),
@@ -105,6 +135,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ACTIVE)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #3",
                         "",
                         LocalDateTime.of(2015, 5, 11, 15, 15, 45),
@@ -112,6 +143,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ERROR)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #4",
                         "",
                         LocalDateTime.of(2016, 9, 6, 20, 32, 3),
@@ -119,6 +151,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ACTIVE)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #5",
                         "",
                         LocalDateTime.of(2017, 8, 12, 17, 32, 57),
@@ -126,6 +159,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.PENDING)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #6",
                         "",
                         LocalDateTime.of(2013, 10, 4, 16, 52, 43),
@@ -133,6 +167,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ACTIVE)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #7",
                         "",
                         LocalDateTime.of(2014, 8, 5, 10, 12, 24),
@@ -140,6 +175,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ACTIVE)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #8",
                         "",
                         LocalDateTime.of(2015, 5, 11, 15, 15, 45),
@@ -147,6 +183,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ERROR)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #9",
                         "",
                         LocalDateTime.of(2016, 9, 6, 20, 32, 3),
@@ -154,6 +191,7 @@ public class ClassificationService {
                         new ClassificationResult(StatusEnum.ACTIVE)
                 ),
                 new Classification(
+                        UUID.randomUUID(),
                         "Image #10",
                         "",
                         LocalDateTime.of(2017, 8, 12, 17, 32, 57),

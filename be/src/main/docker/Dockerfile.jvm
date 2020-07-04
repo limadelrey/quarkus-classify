@@ -4,6 +4,7 @@
 # Before building the docker image run:
 #
 # mvn package
+# mvn quarkus:dev -Ddebug=5006 -Daws.accessKeyId=AKIA5F7ILMI3DKUGAWUR -Daws.secretAccessKey=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
 #
 # Then, build the image with:
 #

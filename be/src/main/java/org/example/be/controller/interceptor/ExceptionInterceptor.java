@@ -1,4 +1,4 @@
-package org.example.be.controller;
+package org.example.be.controller.interceptor;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import org.example.be.model.json.ErrorResponse;
@@ -15,7 +15,8 @@ public class ExceptionInterceptor implements ExceptionMapper<Exception> {
     public Response toResponse(Exception exception) {
         final Response.Status code;
 
-        if (exception instanceof JsonParseException) {
+        if (exception instanceof JsonParseException ||
+                exception instanceof IllegalArgumentException) {
             code = Response.Status.BAD_REQUEST;
         } else if (exception instanceof NoSuchElementException) {
             code = Response.Status.NOT_FOUND;

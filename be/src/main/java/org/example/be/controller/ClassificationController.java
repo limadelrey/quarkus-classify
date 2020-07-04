@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.util.UUID;
 
 @ApplicationScoped
 public class ClassificationController implements ClassificationRouter {
@@ -35,7 +36,7 @@ public class ClassificationController implements ClassificationRouter {
 
     @Counted(name = "readOneCount", description = "How many readOne() calls have been performed")
     @Timed(name = "readOneTime", description = "How long readOne() call takes to perform", unit = MetricUnits.MILLISECONDS)
-    public Response readOne(Long id) {
+    public Response readOne(UUID id) {
         LOGGER.info("readOne() method called");
 
         return Response
@@ -48,7 +49,7 @@ public class ClassificationController implements ClassificationRouter {
     public Response create(@Valid ClassificationRequest request) {
         LOGGER.info("create() method called");
 
-        final Long id = classificationService.insert(request);
+        final UUID id = classificationService.insert(request);
 
         return Response
                 .created(URI.create("/api/v1/image-classification/" + id))
@@ -57,9 +58,10 @@ public class ClassificationController implements ClassificationRouter {
 
     @Counted(name = "deleteCount", description = "How many delete() calls have been performed")
     @Timed(name = "deleteTime", description = "How long delete() call takes to perform", unit = MetricUnits.MILLISECONDS)
-    public Response delete(Long id) {
+    public Response delete(UUID id) {
         LOGGER.info("delete() method called");
 
+        // TODO Handle cases when NoSuchElementException is thrown
         classificationService.delete(id);
 
         return Response
