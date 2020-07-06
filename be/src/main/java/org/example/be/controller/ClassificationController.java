@@ -61,7 +61,7 @@ public class ClassificationController implements ClassificationRouter {
     public Response delete(UUID id) {
         LOGGER.info("delete() method called");
 
-        // TODO Handle cases when NoSuchElementException is thrown
+        //TODO Handle cases when NoSuchElementException is thrown (200OK as Response instead of 404NotFound)
         classificationService.delete(id);
 
         return Response

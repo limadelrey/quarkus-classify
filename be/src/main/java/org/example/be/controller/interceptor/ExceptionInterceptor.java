@@ -13,7 +13,7 @@ public class ExceptionInterceptor implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception exception) {
-        final Response.Status code;
+         final Response.Status code;
 
         if (exception instanceof JsonParseException ||
                 exception instanceof IllegalArgumentException) {

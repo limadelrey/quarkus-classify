@@ -66,7 +66,7 @@ public interface ClassificationRouter {
             @APIResponse(
                     responseCode = "404",
                     name = "not found",
-                    description = "Image classification not found"
+                    description = "Not found"
             ),
             @APIResponse(
                     responseCode = "500",
@@ -84,7 +84,7 @@ public interface ClassificationRouter {
             @APIResponse(
                     responseCode = "201",
                     name = "success",
-                    description = "Image classification created"
+                    description = "Success"
             ),
             @APIResponse(
                     responseCode = "400",
@@ -108,9 +108,9 @@ public interface ClassificationRouter {
     @Operation(summary = "Delete one image classification")
     @APIResponses({
             @APIResponse(
-                    responseCode = "201",
+                    responseCode = "200",
                     name = "success",
-                    description = "Image classification deleted"
+                    description = "Success"
             ),
             @APIResponse(
                     responseCode = "400",
@@ -120,7 +120,7 @@ public interface ClassificationRouter {
             @APIResponse(
                     responseCode = "404",
                     name = "not found",
-                    description = "Image classification not found"
+                    description = "Not found"
             ),
             @APIResponse(
                     responseCode = "500",

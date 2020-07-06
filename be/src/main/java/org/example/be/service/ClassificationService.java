@@ -28,10 +28,10 @@ public class ClassificationService {
     private final Logger LOGGER = LoggerFactory.getLogger(ClassificationService.class);
 
     @Inject
-    S3Service s3Service;
+    ClassificationRepository classificationRepository;
 
     @Inject
-    ClassificationRepository classificationRepository;
+    S3Service s3Service;
 
     public List<ClassificationResponse> getAll() {
         LOGGER.info("getAll() method called");
@@ -71,7 +71,10 @@ public class ClassificationService {
         final String url = s3Service.upload(id, request.getFile(), request.getMimeType());
 
         // Save metadata on database
-        saveMetadataOnDatabase(request, id, url);
+        final ImageMetadata imageMetadata = new ImageMetadata(request.getFileName(), getSizeFromFile(request.getFile()), request.getMimeType(), url);
+        final ClassificationResult classificationResult = new ClassificationResult(StatusEnum.PENDING);
+        final Classification classification = new Classification(id, request.getClassificationName(), request.getClassificationDescription(), LocalDateTime.now(), imageMetadata, classificationResult);
+        classificationRepository.persist(classification);
 
         // Publish outbox event
 
@@ -79,7 +82,27 @@ public class ClassificationService {
     }
 
     @Transactional
+    public ClassificationResponse update(UUID id,
+                                         ClassificationResult result) {
+        LOGGER.info("update() method called");
+
+        final Classification classification = classificationRepository.findById(id);
+
+        if (classification == null) {
+            throw new NoSuchElementException("No image classification with id " + id);
+        }
+
+        // Update metadata on database
+        classification.setClassificationResult(result);
+        classificationRepository.persist(classification);
+
+        return new ClassificationResponse(classification);
+    }
+
+    @Transactional
     public void delete(UUID id) {
+        LOGGER.info("delete() method called");
+
         final Classification classification = classificationRepository.findById(id);
 
         if (classification == null) {
@@ -92,21 +115,6 @@ public class ClassificationService {
     }
 
     //
-
-    private void saveMetadataOnDatabase(ClassificationRequest request,
-                                        UUID id,
-                                        String url) {
-        // Create image metadata entity
-        final ImageMetadata imageMetadata = new ImageMetadata(request.getFileName(), getSizeFromFile(request.getFile()), request.getMimeType(), url);
-
-        // Create classification result entity
-        final ClassificationResult classificationResult = new ClassificationResult(StatusEnum.PENDING);
-
-        // Create classification entity
-        final Classification classification = new Classification(id, request.getClassificationName(), request.getClassificationDescription(), LocalDateTime.now(), imageMetadata, classificationResult);
-
-        classificationRepository.persist(classification);
-    }
 
     private Long getSizeFromFile(InputStream inputStream) {
         try {

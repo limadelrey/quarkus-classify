@@ -51,9 +51,22 @@
             <artifactId>quarkus-amazon-s3</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/url-connection-client -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>url-connection-client</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-reactive-messaging-kafka -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-vertx -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-vertx</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-health -->
