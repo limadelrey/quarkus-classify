@@ -48,7 +48,7 @@ public class ClassificationService {
                 .streamAll(Sort.descending(Classification.CREATED_AT_FIELD))
                 .filter(classification -> classification.getClassificationResult().getStatus() != StatusEnum.CANCELED)
                 .map(ClassificationResponse::new)
-                .limit(5)
+                .limit(20)
                 .collect(Collectors.toList());
 
         /*return getStaticListWithClassifications()
@@ -118,7 +118,7 @@ public class ClassificationService {
         try {
             final ClassificationResultEvent event = message.body();
 
-            final Classification classification = classificationRepository.findById(event.getId());
+            final Classification classification = classificationRepository.findById(UUID.fromString(event.getId()));
 
             if (classification == null) {
                 throw new NoSuchElementException("No image classification with id " + event.getId());

@@ -1,6 +1,5 @@
 package org.example.be.service;
 
-import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.mutiny.core.eventbus.EventBus;
@@ -9,7 +8,6 @@ import org.example.be.model.event.ClassificationResultEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.NoSuchElementException;
 
 @ApplicationScoped
 public class ClassificationResultService {
@@ -28,6 +26,7 @@ public class ClassificationResultService {
     @Incoming("classification")
     public void consume(ClassificationResultEvent event) {
         LOGGER.info("consume() method called");
+        LOGGER.info(event.toString());
 
         bus.sendAndForget("update-classification-result", event);
     }
