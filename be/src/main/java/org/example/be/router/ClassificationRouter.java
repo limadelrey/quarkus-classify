@@ -49,7 +49,7 @@ public interface ClassificationRouter {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id}")
+    @Path("/{id}")
     @Operation(summary = "Read one image classification")
     @APIResponses({
             @APIResponse(
@@ -104,7 +104,7 @@ public interface ClassificationRouter {
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{id}")
+    @Path("/{id}")
     @Operation(summary = "Delete one image classification")
     @APIResponses({
             @APIResponse(
@@ -129,4 +129,5 @@ public interface ClassificationRouter {
             )
     })
     Response delete(@PathParam("id") UUID id);
+
 }

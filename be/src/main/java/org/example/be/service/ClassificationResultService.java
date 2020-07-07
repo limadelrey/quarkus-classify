@@ -9,6 +9,7 @@ import org.example.be.model.event.ClassificationResultEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.NoSuchElementException;
 
 @ApplicationScoped
 public class ClassificationResultService {
@@ -18,19 +19,17 @@ public class ClassificationResultService {
     @Inject
     EventBus bus;
 
+    /**
+     * Consumes data from "classification-result" Kafka topic.
+     * Event is then sent to event bus through "update-classification-result" address.
+     *
+     * @param event Classification result event
+     */
     @Incoming("classification")
-//    @Outgoing("my-stream")
-//    @Broadcast
-    public void process(ClassificationResultEvent event) {
-        System.out.println("TESTE 1");
-        bus.sendAndForget("my-stream", JsonObject.mapFrom(event));
-    }
+    public void consume(ClassificationResultEvent event) {
+        LOGGER.info("consume() method called");
 
-    /*@Incoming("my-stream")
-    public void teste(ClassificationResultEvent event) {
-        System.out.println("TESTE SUCCESS");
-        classificationService.update(event.getId(), new ClassificationResult(event.getStatus()));
-        // sseService.produce();
-    }*/
+        bus.sendAndForget("update-classification-result", event);
+    }
 
 }

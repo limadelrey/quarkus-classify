@@ -1,9 +1,11 @@
 package org.example.be.service;
 
-import io.quarkus.vertx.ConsumeEvent;
+import io.vertx.core.json.JsonObject;
+import org.example.be.model.entity.Classification;
+import org.example.be.model.entity.ClassificationResult;
+import org.example.be.model.json.ClassificationResponse;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.sse.OutboundSseEvent;
 import javax.ws.rs.sse.Sse;
 import javax.ws.rs.sse.SseBroadcaster;
@@ -13,36 +15,40 @@ import java.util.UUID;
 @ApplicationScoped
 public class SSEService {
 
-    /*private Sse sse;
-    private SseBroadcaster sseBroadcaster = null;
-
-    @Context
-    public void setSse(Sse sse) {
-        this.sse = sse;
-    }
-
-    @ConsumeEvent(value = "my-stream-2", blocking = true)
-    public void produce(boolean booleano) {
-        System.out.println("TESTE 5");
-
+    /**
+     * @param sse
+     * @param sseBroadcaster
+     */
+    public void produce(Sse sse,
+                        SseBroadcaster sseBroadcaster,
+                        ClassificationResponse response) {
         if (sseBroadcaster != null) {
             final OutboundSseEvent sseEvent = sse.newEventBuilder()
-                    .id(UUID.randomUUID().toString())
-                    .name("EVENT TYPE")
-                    .data("EVENT DATA")
-                    .reconnectDelay(3000)
+                    .id(response.getId().toString())
+                    .name("CLASSIFICATION_RESULT")
+                    .data(JsonObject.mapFrom(response))
                     .build();
 
             sseBroadcaster.broadcast(sseEvent);
         }
     }
 
-    public void consume(@Context SseEventSink sseEventSink) {
+    /**
+     * @param sse
+     * @param sseBroadcaster
+     * @param sseEventSink
+     * @return
+     */
+    public SseBroadcaster consume(Sse sse,
+                                  SseBroadcaster sseBroadcaster,
+                                  SseEventSink sseEventSink) {
         if (sseBroadcaster == null) {
             sseBroadcaster = sse.newBroadcaster();
         }
 
         sseBroadcaster.register(sseEventSink);
-    }*/
+
+        return sseBroadcaster;
+    }
 
 }

@@ -1,12 +1,17 @@
 package org.example.be.service;
 
 import io.quarkus.panache.common.Sort;
+import io.quarkus.vertx.ConsumeEvent;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.mutiny.core.eventbus.EventBus;
 import org.example.be.model.entity.Classification;
 import org.example.be.model.entity.ClassificationResult;
 import org.example.be.model.entity.ImageMetadata;
 import org.example.be.model.entity.StatusEnum;
+import org.example.be.model.event.ClassificationResultEvent;
 import org.example.be.model.json.ClassificationRequest;
 import org.example.be.model.json.ClassificationResponse;
 import org.example.be.repository.ClassificationRepository;
@@ -28,10 +33,13 @@ public class ClassificationService {
     private final Logger LOGGER = LoggerFactory.getLogger(ClassificationService.class);
 
     @Inject
-    ClassificationRepository classificationRepository;
+    EventBus bus;
 
     @Inject
     S3Service s3Service;
+
+    @Inject
+    ClassificationRepository classificationRepository;
 
     public List<ClassificationResponse> getAll() {
         LOGGER.info("getAll() method called");
@@ -82,24 +90,6 @@ public class ClassificationService {
     }
 
     @Transactional
-    public ClassificationResponse update(UUID id,
-                                         ClassificationResult result) {
-        LOGGER.info("update() method called");
-
-        final Classification classification = classificationRepository.findById(id);
-
-        if (classification == null) {
-            throw new NoSuchElementException("No image classification with id " + id);
-        }
-
-        // Update metadata on database
-        classification.setClassificationResult(result);
-        classificationRepository.persist(classification);
-
-        return new ClassificationResponse(classification);
-    }
-
-    @Transactional
     public void delete(UUID id) {
         LOGGER.info("delete() method called");
 
@@ -112,6 +102,35 @@ public class ClassificationService {
         classification.getClassificationResult().setStatus(StatusEnum.CANCELED);
 
         classificationRepository.persist(classification);
+    }
+
+    /**
+     * Consumes data from "update-classification-result" address on event bus.
+     * Event is then sent again to event bus through "produce-sse-notification" address.
+     *
+     * @param message Message w/ classification result event
+     */
+    @ConsumeEvent(value = "update-classification-result", blocking = true)
+    @Transactional
+    public void update(Message<ClassificationResultEvent> message) {
+        LOGGER.info("update() method called");
+
+        try {
+            final ClassificationResultEvent event = message.body();
+
+            final Classification classification = classificationRepository.findById(event.getId());
+
+            if (classification == null) {
+                throw new NoSuchElementException("No image classification with id " + event.getId());
+            }
+
+            classification.getClassificationResult().setStatus(event.getStatus());
+            classificationRepository.persist(classification);
+
+            bus.sendAndForget("produce-sse-notification", new ClassificationResponse(classification));
+        } catch (NoSuchElementException ex) {
+            LOGGER.error(ex.getMessage());
+        }
     }
 
     //
