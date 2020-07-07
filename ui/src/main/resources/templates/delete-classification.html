@@ -1,0 +1,38 @@
+<div class="modal fade" id="deleteClassificationModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Delete classification</h5>
+                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-danger alert-without-margin-bottom" role="alert">Are you sure you want to delete this classification?</div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="submit-button" class="btn btn-danger text-white" data-classification-id="">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Send delete request to server-side and reloads page afterwards
+    $(document).ready(function() {
+        $("#submit-button").click(function() {
+            $.ajax({
+                url: "/delete-classification/" + $(this).data("classification-id"),
+                type: "DELETE",
+                success: function(result) {
+                    location.reload();
+                },
+                error: function(error) {
+                    alert("Error trying to delete image classification");
+                }
+            })
+        })
+    })
+</script>

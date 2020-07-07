@@ -1,4 +1,4 @@
-package org.example.ui.controller;
+package org.example.ui.service;
 
 import org.example.ui.model.ClassificationRequest;
 import org.example.ui.model.FormDataFile;

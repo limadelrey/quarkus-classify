@@ -37,6 +37,7 @@ body {
     border: none;
     outline: none !important;
     margin-left: 10px;
+        outline-color: #f8f9fa
 }
 
 .table-title .btn:hover, .table-title .btn:focus {
@@ -168,7 +169,11 @@ table.table .avatar {
 }
 
 .hint-text {
-    float: left;
+    float: right;
     margin-top: 10px;
     font-size: 13px;
+}
+
+.alert-without-margin-bottom {
+    margin-bottom: 0px;
 }

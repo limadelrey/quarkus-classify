@@ -23,13 +23,13 @@ public class ClassificationRequest {
     public static final String MIME_TYPE_FIELD = "mime_type";
 
     @FormParam(CLASSIFICATION_NAME_FIELD)
-    @PartType(MediaType.TEXT_PLAIN)
+    @PartType(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     @JsonProperty(CLASSIFICATION_NAME_FIELD)
     @NotBlank(message = CLASSIFICATION_NAME_FIELD + NOT_BLANK_MESSAGE)
     private final String classificationName;
 
     @FormParam(CLASSIFICATION_DESCRIPTION_FIELD)
-    @PartType(MediaType.TEXT_PLAIN)
+    @PartType(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     @JsonProperty(CLASSIFICATION_DESCRIPTION_FIELD)
     @NotNull(message = CLASSIFICATION_DESCRIPTION_FIELD + NOT_NULL_MESSAGE)
     private final String classificationDescription;
@@ -41,13 +41,13 @@ public class ClassificationRequest {
     private final InputStream file;
 
     @FormParam(FILE_NAME_FIELD)
-    @PartType(MediaType.TEXT_PLAIN)
+    @PartType(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     @JsonProperty(FILE_NAME_FIELD)
     @NotBlank(message = FILE_NAME_FIELD + NOT_BLANK_MESSAGE)
     private final String fileName;
 
     @FormParam(MIME_TYPE_FIELD)
-    @PartType(MediaType.TEXT_PLAIN)
+    @PartType(MediaType.TEXT_PLAIN + ";charset=UTF-8")
     @JsonProperty(MIME_TYPE_FIELD)
     @NotBlank(message = MIME_TYPE_FIELD + NOT_BLANK_MESSAGE)
     private final String mimeType;
