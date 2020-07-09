@@ -1,9 +1,9 @@
 package org.example.be.service;
 
+import io.debezium.outbox.quarkus.ExportedEvent;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.vertx.ConsumeEvent;
 import io.vertx.core.eventbus.Message;
-import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.mutiny.core.eventbus.EventBus;
@@ -11,12 +11,14 @@ import org.example.be.model.entity.Classification;
 import org.example.be.model.entity.ClassificationResult;
 import org.example.be.model.entity.ImageMetadata;
 import org.example.be.model.entity.StatusEnum;
+import org.example.be.model.event.ClassificationCreatedEvent;
 import org.example.be.model.event.ClassificationResultEvent;
 import org.example.be.model.json.ClassificationRequest;
 import org.example.be.model.json.ClassificationResponse;
 import org.example.be.repository.ClassificationRepository;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -39,8 +41,20 @@ public class ClassificationService {
     S3Service s3Service;
 
     @Inject
+    Event<ExportedEvent<?, ?>> event;
+
+    @Inject
     ClassificationRepository classificationRepository;
 
+    /**
+     * Read all classifications
+     * <p>
+     * It should order by date;
+     * It shouldn't return CANCELED classifications (soft delete);
+     * It should only return a maximum of 20 elements.
+     *
+     * @return List w/ classification responses
+     */
     public List<ClassificationResponse> getAll() {
         LOGGER.info("getAll() method called");
 
@@ -57,6 +71,12 @@ public class ClassificationService {
                 .collect(Collectors.toList());*/
     }
 
+    /**
+     * Read one classification
+     *
+     * @param id Classification ID
+     * @return Classification response
+     */
     public ClassificationResponse getById(UUID id) {
         LOGGER.info("getById() method called");
 
@@ -69,6 +89,16 @@ public class ClassificationService {
         return new ClassificationResponse(classification);
     }
 
+    /**
+     * Create new classification
+     * <p>
+     * It should upload image file to S3 bucket;
+     * It should save image metadata on database;
+     * It should save outbox event.
+     *
+     * @param request Classification request
+     * @return UUID Classification ID
+     */
     @Transactional
     public UUID insert(ClassificationRequest request) {
         LOGGER.info("insert() method called");
@@ -85,10 +115,16 @@ public class ClassificationService {
         classificationRepository.persist(classification);
 
         // Publish outbox event
+        event.fire(ClassificationCreatedEvent.of(classification));
 
         return id;
     }
 
+    /**
+     * Delete classification
+     *
+     * @param id Classification ID
+     */
     @Transactional
     public void delete(UUID id) {
         LOGGER.info("delete() method called");
@@ -133,8 +169,14 @@ public class ClassificationService {
         }
     }
 
-    //
+    /* -------------------------------------------------------- */
 
+    /**
+     * Get image file size
+     *
+     * @param inputStream Image file
+     * @return Image file size (in bytes)
+     */
     private Long getSizeFromFile(InputStream inputStream) {
         try {
             return Long.valueOf(inputStream.readAllBytes().length);
@@ -143,6 +185,11 @@ public class ClassificationService {
         }
     }
 
+    /**
+     * Get static list w/ classifications (useful for testing UI service)
+     *
+     * @return List w/ classifications
+     */
     private List<Classification> getStaticListWithClassifications() {
         return List.of(
                 new Classification(

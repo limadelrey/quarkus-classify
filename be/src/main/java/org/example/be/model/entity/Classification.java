@@ -12,12 +12,12 @@ import java.util.UUID;
 @Entity
 public class Classification {
 
-    public static final String ID_FIELD = "id";
-    public static final String NAME_FIELD = "name";
-    public static final String DESCRIPTION_FIELD = "description";
+    private static final String ID_FIELD = "id";
+    private static final String NAME_FIELD = "name";
+    private static final String DESCRIPTION_FIELD = "description";
     public static final String CREATED_AT_FIELD = "created_at";
-    public static final String IMAGE_METADATA_ID_FIELD = "image_metadata_id";
-    public static final String CLASSIFICATION_RESULT_ID_FIELD = "classification_result_id";
+    private static final String IMAGE_METADATA_ID_FIELD = "image_metadata_id";
+    private static final String CLASSIFICATION_RESULT_ID_FIELD = "classification_result_id";
 
     @Id
     @Column(name = ID_FIELD)

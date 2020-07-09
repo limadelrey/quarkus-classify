@@ -10,6 +10,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <debezium-quarkus-outbox.version>1.2.0.Final</debezium-quarkus-outbox.version>
+    </properties>
+
     <artifactId>be</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -67,6 +71,13 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-vertx</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.debezium/debezium-quarkus-outbox -->
+        <dependency>
+            <groupId>io.debezium</groupId>
+            <artifactId>debezium-quarkus-outbox</artifactId>
+            <version>${debezium-quarkus-outbox.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-health -->
