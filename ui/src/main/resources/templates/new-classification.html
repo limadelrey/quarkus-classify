@@ -1,7 +1,8 @@
-<div class="modal fade" id="newClassificationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="newClassificationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="/new-classification" method="POST" enctype="multipart/form-data">
+            <form id="form">
                 <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title" id="modalLabel">New classification</h5>
                     <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
@@ -12,7 +13,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="name" name="name"
                                placeholder="Enter classification name">
                     </div>
 
@@ -35,3 +36,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Send create request to server-side and reloads page afterwards
+    // Really necessary since MultipartFormDataInput needs that each field is encoded individually
+    $("form").submit(function() {
+        var formData = new FormData();
+
+        formData.append("name", new Blob([$("#name").val()], { type: "text/plain;charset=utf-8"}));
+        formData.append("description", new Blob([$("#description").val()], { type: "text/plain;charset=utf-8"}));
+        formData.append('file', $('input[type=file]')[0].files[0]);
+
+        $.ajax({
+            url: "/new-classification",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(result) {
+                location.reload();
+            },
+            error: function(error) {
+                alert("Error trying to create image classification");
+            }
+        })
+    })
+</script>
