@@ -35,7 +35,7 @@ public class ClassificationRequest {
     @FormParam(CLASSIFICATION_DESCRIPTION_FIELD)
     @PartType(MediaType.TEXT_PLAIN)
     @JsonProperty(CLASSIFICATION_DESCRIPTION_FIELD)
-    @NotBlank(message = CLASSIFICATION_DESCRIPTION_FIELD + NOT_BLANK_MESSAGE)
+    @NotNull(message = CLASSIFICATION_DESCRIPTION_FIELD + NOT_NULL_MESSAGE)
     private String classificationDescription;
 
     @FormParam(FILE_FIELD)
