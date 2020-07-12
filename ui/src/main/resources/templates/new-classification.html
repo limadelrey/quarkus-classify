@@ -41,6 +41,8 @@
     // Send create request to server-side and reloads page afterwards
     // Really necessary since MultipartFormDataInput needs that each field is encoded individually
     $("form").submit(function() {
+        event.preventDefault();
+
         var formData = new FormData();
 
         formData.append("name", new Blob([$("#name").val()], { type: "text/plain;charset=utf-8"}));

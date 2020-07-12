@@ -1,6 +1,7 @@
 {#include base.html}{/include}
 {#include new-classification.html}{/include}
 {#include delete-classification.html}{/include}
+{#include read-classification.html}{/include}
 
 <body>
     <!-- NAVBAR -->
@@ -56,7 +57,7 @@
                         <td><span class="status status-error">&bull;</span> Error processing</td>
                         {/if}
                         <td>
-<!--                            <a href="#" class="settings"><i class="material-icons">&#xE8B8;</i></a>-->
+                            <a href="#" class="settings" title="Edit" data-toggle="modal" data-target="#readClassificationModal" data-id="{classification.id}"><i class="material-icons">&#xE8B8;</i></a>
                             <a href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteClassificationModal" data-id="{classification.id}"><i class="material-icons">&#xE5C9;</i></a>
                         </td>
                     </tr>
@@ -66,15 +67,6 @@
 
                 <div class="clearfix">
                     <div class="hint-text">Showing <b>{classifications.size}</b> elements</div>
-<!--                    <ul class="paging">-->
-<!--                        <li class="page-item disabled"><a href="#">Previous</a></li>-->
-<!--                            <li class="page-item active"><a href="#" class="page-link">1</a></li>-->
-<!--                            <li class="page-item"><a href="#" class="page-link">2</a></li>-->
-<!--                            <li class="page-item"><a href="#" class="page-link">3</a></li>-->
-<!--                            <li class="page-item"><a href="#" class="page-link">4</a></li>-->
-<!--                            <li class="page-item"><a href="#" class="page-link">5</a></li>-->
-<!--                        <li class="page-item disabled"><a href="#">Next</a></li>-->
-<!--                    </ul>-->
                 </div>
             </div>
         </div>
@@ -84,9 +76,32 @@
 <script>
     // Send data-classification-id to modal submit button
     $("#deleteClassificationModal").on("show.bs.modal", function(e) {
-        var classificationId = $(e.relatedTarget).data('id');
+        var classificationId = $(e.relatedTarget).data("id");
 
         $("#submit-button").attr("data-classification-id", classificationId);
+    });
+
+    // Get classification details and send them to modal
+    var infoModal = $('#readClassificationModal');
+    $('.settings').on('click', function(){
+        // e.preventDefault();
+
+        $.ajax({
+          type: "GET",
+          url: "/read-classification/" + $(this).data("id"),
+          dataType: 'json',
+          success: function(data){
+            // Set URL image
+            infoModal.find("#url").attr("src", data.url);
+
+            // Set title
+            infoModal.find("#modalLabel").text("Read classification - " + data.name);
+
+            infoModal.modal('show');
+          }
+        });
+
+        return false;
     });
 
     // Consume notifications, reload page and create toast

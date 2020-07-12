@@ -177,3 +177,12 @@ table.table .avatar {
 .alert-without-margin-bottom {
     margin-bottom: 0px;
 }
+
+.big-avatar {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}

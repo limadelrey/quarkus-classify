@@ -23,7 +23,7 @@ public interface ClassificationService {
     @GET
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    Classification readOne(@PathParam("id") UUID id);
+    Response readOne(@PathParam("id") UUID id);
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)

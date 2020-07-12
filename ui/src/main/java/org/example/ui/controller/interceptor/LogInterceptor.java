@@ -1,4 +1,4 @@
-package org.example.ui.controller;
+package org.example.ui.controller.interceptor;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.logging.Logger;

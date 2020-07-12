@@ -1,5 +1,8 @@
 package org.example.ui.controller;
 
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+import io.quarkus.qute.api.ResourcePath;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -38,6 +41,15 @@ public class ClassificationController {
                 .status(301)
                 .location(URI.create("/"))
                 .build();
+    }
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("read-classification/{id}")
+    public Response read(@PathParam("id") UUID id) {
+        LOGGER.info("read() method called");
+
+        return classificationService.readOne(id);
     }
 
     @DELETE
