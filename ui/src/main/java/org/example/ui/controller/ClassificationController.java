@@ -1,8 +1,5 @@
 package org.example.ui.controller;
 
-import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
-import io.quarkus.qute.api.ResourcePath;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.eclipse.microprofile.rest.client.inject.RestClient;

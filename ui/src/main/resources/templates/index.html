@@ -105,7 +105,11 @@
     });
 
     // Consume notifications, reload page and create toast
-    var source = new EventSource("http://localhost:8081/api/v1/image-classification/notifications");
+    // It should change by using environment variables or any other external way
+    // DEV
+    // var source = new EventSource("http://localhost:8081/api/v1/image-classification/notifications");
+    // LOCAL
+    var source = new EventSource("http://localhost:30002/api/v1/image-classification/notifications");
 
     source.addEventListener("CLASSIFICATION_RESULT", function(event) {
         const data = JSON.parse(event.data);
