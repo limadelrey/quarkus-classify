@@ -3,12 +3,14 @@ package org.example.be.service;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.mutiny.core.eventbus.EventBus;
+import org.eclipse.microprofile.opentracing.Traced;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.example.be.model.event.ClassificationResultEvent;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+@Traced
 @ApplicationScoped
 public class ClassificationResultService {
 

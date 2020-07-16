@@ -2,28 +2,24 @@ package org.example.be.controller;
 
 import io.quarkus.vertx.ConsumeEvent;
 import io.vertx.core.eventbus.Message;
-import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
-import org.example.be.model.entity.Classification;
+import org.eclipse.microprofile.opentracing.Traced;
 import org.example.be.model.json.ClassificationResponse;
 import org.example.be.router.ClassificationResultRouter;
 import org.example.be.service.SSEService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.sse.Sse;
 import javax.ws.rs.sse.SseBroadcaster;
 import javax.ws.rs.sse.SseEventSink;
 
+@Traced
 @ApplicationScoped
 public class ClassificationResultController implements ClassificationResultRouter {
 

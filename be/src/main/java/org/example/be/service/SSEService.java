@@ -15,10 +15,6 @@ import java.util.UUID;
 @ApplicationScoped
 public class SSEService {
 
-    /**
-     * @param sse
-     * @param sseBroadcaster
-     */
     public void produce(Sse sse,
                         SseBroadcaster sseBroadcaster,
                         ClassificationResponse response) {
@@ -33,12 +29,6 @@ public class SSEService {
         }
     }
 
-    /**
-     * @param sse
-     * @param sseBroadcaster
-     * @param sseEventSink
-     * @return
-     */
     public SseBroadcaster consume(Sse sse,
                                   SseBroadcaster sseBroadcaster,
                                   SseEventSink sseEventSink) {

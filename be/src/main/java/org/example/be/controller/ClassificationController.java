@@ -5,6 +5,7 @@ import io.vertx.core.logging.LoggerFactory;
 import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
+import org.eclipse.microprofile.opentracing.Traced;
 import org.example.be.model.json.ClassificationRequest;
 import org.example.be.router.ClassificationRouter;
 import org.example.be.service.ClassificationService;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.UUID;
 
+@Traced
 @ApplicationScoped
 public class ClassificationController implements ClassificationRouter {
 

@@ -7,6 +7,7 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.mutiny.core.eventbus.EventBus;
+import org.eclipse.microprofile.opentracing.Traced;
 import org.example.be.model.entity.Classification;
 import org.example.be.model.entity.ClassificationResult;
 import org.example.be.model.entity.ImageMetadata;
@@ -29,6 +30,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Traced
 @ApplicationScoped
 public class ClassificationService {
 

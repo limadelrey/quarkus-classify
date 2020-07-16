@@ -3,16 +3,15 @@
 #
 # Before building the docker image run:
 #
-# mvn package
-# mvn quarkus:dev -Ddebug=5006 -Daws.accessKeyId=AKIA5F7ILMI3DKUGAWUR -Daws.secretAccessKey=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
+# mvn clean package
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/quarkus-hackaton-be .
+# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/quarkus-hackaton-be:1.0 .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/quarkus-hackaton-be
+# docker run -i --rm -p 8081:8081 quarkus/quarkus-hackaton-be:1.0
 #
 # If you want to include the debug port into your docker image
 # you will have to expose the debug port (default 5005) like this :  EXPOSE 8080 5050

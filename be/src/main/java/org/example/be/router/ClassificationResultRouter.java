@@ -31,7 +31,6 @@ public interface ClassificationResultRouter {
     @Produces(MediaType.SERVER_SENT_EVENTS)
     @SseElementType(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     @Operation(summary = "Read image classification notifications")
-    // TODO Add APIResponses
     void read(@Context SseEventSink sseEventSink);
 
 }
