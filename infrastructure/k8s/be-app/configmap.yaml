@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quarkus-hackaton-be-app
+  labels:
+    app: quarkus-hackaton-be-app
+data:
+  AWS_ACCESS_KEY_ID: AKIA5F7ILMI3DKUGAWUR
+  AWS_SECRET_ACCESS_KEY: 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
