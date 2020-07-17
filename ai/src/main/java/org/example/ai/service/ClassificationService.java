@@ -4,6 +4,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.example.ai.classification.ImageClassificationPython;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ClassificationService {
@@ -17,7 +18,11 @@ public class ClassificationService {
     @ConfigProperty(name = "authorization")
     String authorization;
 
-    public String classificateImage(final String imageUrl) {
-        return ImageClassificationPython.TAGS.execute(apiKey, apiSecret, authorization, imageUrl);
+    @Inject
+    ImageClassificationPython imageClassificationPython;
+
+    public String performClassification(final String url) {
+        return imageClassificationPython.execute(apiKey, apiSecret, authorization, url);
     }
+
 }

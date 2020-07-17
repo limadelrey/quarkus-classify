@@ -21,40 +21,10 @@
             <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider -->
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-multipart-provider</artifactId>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-hibernate-validator -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-validator</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-hibernate-orm-panache -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-orm-panache</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-jdbc-postgresql -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-postgresql</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-amazon-s3 -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-amazon-s3</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/url-connection-client -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>url-connection-client</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-reactive-messaging-kafka -->
@@ -85,10 +55,6 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-openapi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-core</artifactId>
         </dependency>
     </dependencies>
 
