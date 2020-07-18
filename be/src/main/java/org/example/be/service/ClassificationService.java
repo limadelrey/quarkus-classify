@@ -8,13 +8,10 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.mutiny.core.eventbus.EventBus;
 import org.eclipse.microprofile.opentracing.Traced;
-import org.example.be.model.entity.Classification;
-import org.example.be.model.entity.ClassificationResult;
-import org.example.be.model.entity.ImageMetadata;
-import org.example.be.model.entity.StatusEnum;
-import org.example.be.model.event.ClassificationCreatedEvent;
-import org.example.be.model.event.ClassificationResultEvent;
-import org.example.be.model.json.ClassificationRequest;
+import org.example.be.model.entity.*;
+import org.example.be.model.event.reply.ClassificationReplyEvent;
+import org.example.be.model.event.reply.ClassificationStatusEnum;
+import org.example.be.model.event.request.ClassificationRequestEvent;
 import org.example.be.model.json.ClassificationResponse;
 import org.example.be.repository.ClassificationRepository;
 
@@ -102,7 +99,7 @@ public class ClassificationService {
      * @return UUID Classification ID
      */
     @Transactional
-    public UUID insert(ClassificationRequest request) {
+    public UUID insert(org.example.be.model.json.ClassificationRequest request) {
         LOGGER.info("insert() method called");
 
         final UUID id = UUID.randomUUID();
@@ -117,7 +114,7 @@ public class ClassificationService {
         classificationRepository.persist(classification);
 
         // Publish outbox event
-        event.fire(ClassificationCreatedEvent.of(classification));
+        event.fire(ClassificationRequestEvent.of(id, url));
 
         return id;
     }
@@ -150,11 +147,11 @@ public class ClassificationService {
      */
     @ConsumeEvent(value = "update-classification-result", blocking = true)
     @Transactional
-    public void update(Message<ClassificationResultEvent> message) {
+    public void update(Message<ClassificationReplyEvent> message) {
         LOGGER.info("update() method called");
 
         try {
-            final ClassificationResultEvent event = message.body();
+            final ClassificationReplyEvent event = message.body();
 
             final Classification classification = classificationRepository.findById(UUID.fromString(event.getId()));
 
@@ -162,7 +159,20 @@ public class ClassificationService {
                 throw new NoSuchElementException("No image classification with id " + event.getId());
             }
 
-            classification.getClassificationResult().setStatus(event.getStatus());
+            // Insert classification tags
+            final List<ClassificationTag> tags = event.getTags()
+                    .stream()
+                    .map(tag -> new ClassificationTag(UUID.randomUUID(), tag.getName(), tag.getConfidence()))
+                    .collect(Collectors.toList());
+            classification.getClassificationResult().setTags(tags);
+
+            // Update classification result status
+            if (event.getStatus() == ClassificationStatusEnum.ERROR) {
+                classification.getClassificationResult().setStatus(StatusEnum.ERROR);
+            } else {
+                classification.getClassificationResult().setStatus(StatusEnum.ACTIVE);
+            }
+
             classificationRepository.persist(classification);
 
             bus.sendAndForget("produce-sse-notification", new ClassificationResponse(classification));

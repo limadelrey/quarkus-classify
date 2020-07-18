@@ -43,8 +43,6 @@ public class S3Service {
         return client.utilities().getUrl(getUrlRequest).toString();
     }
 
-    //
-
     private PutObjectRequest buildPutObjectRequest(UUID id,
                                                    String mimeType) {
         return PutObjectRequest.builder()

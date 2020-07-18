@@ -1,14 +1,13 @@
-package org.example.be.model.event;
+package org.example.be.model.event.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.debezium.outbox.quarkus.ExportedEvent;
-import org.example.be.model.entity.Classification;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public class ClassificationCreatedEvent implements ExportedEvent<UUID, JsonNode> {
+public class ClassificationRequestEvent implements ExportedEvent<UUID, JsonNode> {
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -19,15 +18,16 @@ public class ClassificationCreatedEvent implements ExportedEvent<UUID, JsonNode>
     private final JsonNode payload;
     private final Instant timestamp;
 
-    private ClassificationCreatedEvent(UUID id,
+    private ClassificationRequestEvent(UUID id,
                                        JsonNode payload) {
         this.id = id;
         this.payload = payload;
         this.timestamp = Instant.now();
     }
 
-    public static ClassificationCreatedEvent of(Classification classification) {
-        return new ClassificationCreatedEvent(classification.getId(), mapper.valueToTree(classification));
+    public static ClassificationRequestEvent of(UUID id,
+                                                String url) {
+        return new ClassificationRequestEvent(id, mapper.valueToTree(new ClassificationRequestPayload(id, url)));
     }
 
     @Override

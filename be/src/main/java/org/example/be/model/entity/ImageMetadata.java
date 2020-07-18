@@ -11,13 +11,27 @@ import javax.persistence.*;
 @Table(name = "image_metadata")
 public class ImageMetadata {
 
+    private static final String ID_FIELD = "id";
+    private static final String NAME_FIELD = "name";
+    private static final String SIZE_FIELD = "size";
+    private static final String FORMAT_FIELD = "format";
+    private static final String URL_FIELD = "url";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = ID_FIELD)
     private Long id;
 
+    @Column(name = NAME_FIELD)
     private String name;
+
+    @Column(name = SIZE_FIELD)
     private Long size;
+
+    @Column(name = FORMAT_FIELD)
     private String format;
+
+    @Column(name = URL_FIELD)
     private String url;
 
     public ImageMetadata(String name,
