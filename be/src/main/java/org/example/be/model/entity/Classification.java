@@ -16,6 +16,7 @@ public class Classification {
     private static final String NAME_FIELD = "name";
     private static final String DESCRIPTION_FIELD = "description";
     public static final String CREATED_AT_FIELD = "created_at";
+    public static final String UPDATED_AT_FIELD = "updated_at";
     private static final String IMAGE_METADATA_ID_FIELD = "image_metadata_id";
     private static final String CLASSIFICATION_RESULT_ID_FIELD = "classification_result_id";
 
@@ -31,6 +32,9 @@ public class Classification {
 
     @Column(name = CREATED_AT_FIELD)
     private LocalDateTime createdAt;
+
+    @Column(name = UPDATED_AT_FIELD)
+    private LocalDateTime updatedAt;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = IMAGE_METADATA_ID_FIELD)

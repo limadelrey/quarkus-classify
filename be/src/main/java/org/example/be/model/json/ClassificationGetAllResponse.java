@@ -9,11 +9,11 @@ import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-import static org.example.be.model.json.ClassificationResponse.*;
+import static org.example.be.model.json.ClassificationGetAllResponse.*;
 
 @Data
 @JsonPropertyOrder({ID_FIELD, NAME_FIELD, DESCRIPTION_FIELD, URL_FIELD, STATUS_FIELD, CREATED_AT_FIELD})
-public class ClassificationResponse implements Serializable {
+public class ClassificationGetAllResponse implements Serializable {
 
     private static final long serialVersionUID = -8874756750139294954L;
 
@@ -42,7 +42,7 @@ public class ClassificationResponse implements Serializable {
     @JsonProperty(value = CREATED_AT_FIELD)
     private final String createdAt;
 
-    public ClassificationResponse(Classification classification) {
+    public ClassificationGetAllResponse(Classification classification) {
         this.id = classification.getId();
         this.name = classification.getName();
         this.description = classification.getDescription();

@@ -25,8 +25,8 @@ public class ClassificationResult {
     @Column(name = STATUS_FIELD)
     private StatusEnum status;
 
-    @OneToMany
-    @JoinColumn(name = TAGS_FIELD)
+    @OneToMany(mappedBy = "classificationResult", cascade = CascadeType.ALL)
+    @Column(name = TAGS_FIELD)
     private List<ClassificationTag> tags;
 
     public ClassificationResult(StatusEnum status) {

@@ -12,16 +12,22 @@ import org.example.be.model.entity.*;
 import org.example.be.model.event.reply.ClassificationReplyEvent;
 import org.example.be.model.event.reply.ClassificationStatusEnum;
 import org.example.be.model.event.request.ClassificationRequestEvent;
-import org.example.be.model.json.ClassificationResponse;
+import org.example.be.model.json.ClassificationGetAllResponse;
+import org.example.be.model.json.ClassificationGetByIdResponse;
+import org.example.be.model.json.ClassificationRequest;
 import org.example.be.repository.ClassificationRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -33,6 +39,8 @@ public class ClassificationService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ClassificationService.class);
 
+    private final HashMap<UUID, Instant> consumedEventsMap = new HashMap<>();
+
     @Inject
     EventBus bus;
 
@@ -40,10 +48,10 @@ public class ClassificationService {
     S3Service s3Service;
 
     @Inject
-    Event<ExportedEvent<?, ?>> event;
+    ClassificationRepository classificationRepository;
 
     @Inject
-    ClassificationRepository classificationRepository;
+    Event<ExportedEvent<?, ?>> event;
 
     /**
      * Read all classifications
@@ -54,13 +62,13 @@ public class ClassificationService {
      *
      * @return List w/ classification responses
      */
-    public List<ClassificationResponse> getAll() {
+    public List<ClassificationGetAllResponse> getAll() {
         LOGGER.info("getAll() method called");
 
         return classificationRepository
                 .streamAll(Sort.descending(Classification.CREATED_AT_FIELD))
-                .filter(classification -> classification.getClassificationResult().getStatus() != StatusEnum.CANCELED)
-                .map(ClassificationResponse::new)
+                .filter(classification -> classification.getClassificationResult().getStatus() != StatusEnum.DELETED)
+                .map(ClassificationGetAllResponse::new)
                 .limit(20)
                 .collect(Collectors.toList());
 
@@ -76,7 +84,7 @@ public class ClassificationService {
      * @param id Classification ID
      * @return Classification response
      */
-    public ClassificationResponse getById(UUID id) {
+    public ClassificationGetByIdResponse getById(UUID id) {
         LOGGER.info("getById() method called");
 
         final Classification classification = classificationRepository.findById(id);
@@ -85,7 +93,7 @@ public class ClassificationService {
             throw new NoSuchElementException("No image classification with id " + id);
         }
 
-        return new ClassificationResponse(classification);
+        return new ClassificationGetByIdResponse(classification);
     }
 
     /**
@@ -99,16 +107,19 @@ public class ClassificationService {
      * @return UUID Classification ID
      */
     @Transactional
-    public UUID insert(org.example.be.model.json.ClassificationRequest request) {
+    public UUID insert(ClassificationRequest request) {
         LOGGER.info("insert() method called");
 
         final UUID id = UUID.randomUUID();
 
+        // Create temporary file
+        final File temporaryFile = createTemporaryFile(request.getFile());
+
         // Upload to S3 bucket
-        final String url = s3Service.upload(id, request.getFile(), request.getMimeType());
+        final String url = s3Service.upload(id, temporaryFile, request.getMimeType());
 
         // Save metadata on database
-        final ImageMetadata imageMetadata = new ImageMetadata(request.getFileName(), getSizeFromFile(request.getFile()), request.getMimeType(), url);
+        final ImageMetadata imageMetadata = new ImageMetadata(request.getFileName(), temporaryFile.length(), request.getMimeType(), url);
         final ClassificationResult classificationResult = new ClassificationResult(StatusEnum.PENDING);
         final Classification classification = new Classification(id, request.getClassificationName(), request.getClassificationDescription(), LocalDateTime.now(), imageMetadata, classificationResult);
         classificationRepository.persist(classification);
@@ -117,6 +128,54 @@ public class ClassificationService {
         event.fire(ClassificationRequestEvent.of(id, url));
 
         return id;
+    }
+
+    /**
+     * Consumes data from "update-classification" address on event bus.
+     * Event is then sent again to event bus through "produce-sse-notification" address.
+     *
+     * @param message Message w/ classification reply event
+     */
+    @ConsumeEvent(value = "update-classification", blocking = true)
+    @Transactional
+    public void update(Message<ClassificationReplyEvent> message) {
+        LOGGER.info("update() method called");
+
+        try {
+            final ClassificationReplyEvent event = message.body();
+
+            // Check if event was already consumed (in-memory validation)
+            isConsumed(event.getId());
+
+            final Classification classification = classificationRepository.findById(event.getId());
+
+            if (classification == null) {
+                throw new NoSuchElementException("No image classification with id " + event.getId());
+            }
+
+            // Insert classification tags
+            final List<ClassificationTag> tags = event.getTags()
+                    .stream()
+                    .map(tag -> new ClassificationTag(tag.getName(), tag.getConfidence(), classification.getClassificationResult()))
+                    .collect(Collectors.toList());
+            classification.getClassificationResult().setTags(tags);
+
+            // Update classification result status
+            if (event.getStatus() == ClassificationStatusEnum.ERROR) {
+                classification.getClassificationResult().setStatus(StatusEnum.ERROR);
+            } else {
+                classification.getClassificationResult().setStatus(StatusEnum.ACTIVE);
+            }
+
+            // Update classification update date
+            classification.setUpdatedAt(LocalDateTime.now());
+
+            classificationRepository.persist(classification);
+
+            bus.sendAndForget("produce-sse-notification", new ClassificationGetAllResponse(classification));
+        } catch (NoSuchElementException ex) {
+            LOGGER.error(ex.getMessage());
+        }
     }
 
     /**
@@ -134,66 +193,41 @@ public class ClassificationService {
             throw new NoSuchElementException("No image classification with id " + id);
         }
 
-        classification.getClassificationResult().setStatus(StatusEnum.CANCELED);
+        classification.getClassificationResult().setStatus(StatusEnum.DELETED);
 
         classificationRepository.persist(classification);
     }
 
     /**
-     * Consumes data from "update-classification-result" address on event bus.
-     * Event is then sent again to event bus through "produce-sse-notification" address.
+     * Create temporary file based on image data
      *
-     * @param message Message w/ classification result event
+     * @param data Image data
+     * @return File
      */
-    @ConsumeEvent(value = "update-classification-result", blocking = true)
-    @Transactional
-    public void update(Message<ClassificationReplyEvent> message) {
-        LOGGER.info("update() method called");
+    private File createTemporaryFile(InputStream data) {
+        final File temporaryPath;
 
         try {
-            final ClassificationReplyEvent event = message.body();
-
-            final Classification classification = classificationRepository.findById(UUID.fromString(event.getId()));
-
-            if (classification == null) {
-                throw new NoSuchElementException("No image classification with id " + event.getId());
-            }
-
-            // Insert classification tags
-            final List<ClassificationTag> tags = event.getTags()
-                    .stream()
-                    .map(tag -> new ClassificationTag(UUID.randomUUID(), tag.getName(), tag.getConfidence()))
-                    .collect(Collectors.toList());
-            classification.getClassificationResult().setTags(tags);
-
-            // Update classification result status
-            if (event.getStatus() == ClassificationStatusEnum.ERROR) {
-                classification.getClassificationResult().setStatus(StatusEnum.ERROR);
-            } else {
-                classification.getClassificationResult().setStatus(StatusEnum.ACTIVE);
-            }
-
-            classificationRepository.persist(classification);
-
-            bus.sendAndForget("produce-sse-notification", new ClassificationResponse(classification));
-        } catch (NoSuchElementException ex) {
-            LOGGER.error(ex.getMessage());
+            temporaryPath = File.createTempFile("upload", ".tmp");
+            Files.copy(data, temporaryPath.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
+
+        return temporaryPath;
     }
 
-    /* -------------------------------------------------------- */
-
     /**
-     * Get image file size
+     * Checks if event was already consumed in order
+     * to avoid duplicate event consumption
      *
-     * @param inputStream Image file
-     * @return Image file size (in bytes)
+     * @param id Classification ID
      */
-    private Long getSizeFromFile(InputStream inputStream) {
-        try {
-            return Long.valueOf(inputStream.readAllBytes().length);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex.getMessage());
+    private void isConsumed(UUID id) {
+        if (consumedEventsMap.containsKey(id)) {
+            throw new RuntimeException("Event with id " + id + " was already consumed at " + consumedEventsMap.get(id));
+        } else {
+            consumedEventsMap.put(id, Instant.now());
         }
     }
 

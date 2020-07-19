@@ -1,23 +1,29 @@
 package org.example.be.service;
 
 import io.vertx.core.json.JsonObject;
-import org.example.be.model.entity.Classification;
-import org.example.be.model.entity.ClassificationResult;
-import org.example.be.model.json.ClassificationResponse;
+import org.eclipse.microprofile.opentracing.Traced;
+import org.example.be.model.json.ClassificationGetAllResponse;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.sse.OutboundSseEvent;
 import javax.ws.rs.sse.Sse;
 import javax.ws.rs.sse.SseBroadcaster;
 import javax.ws.rs.sse.SseEventSink;
-import java.util.UUID;
 
+@Traced
 @ApplicationScoped
 public class SSEService {
 
+    /**
+     * Publish an SSE event to all registered SseEventSink instances.
+     *
+     * @param sse            SSE API
+     * @param sseBroadcaster SSE broadcasting facility
+     * @param response       Classification response
+     */
     public void produce(Sse sse,
                         SseBroadcaster sseBroadcaster,
-                        ClassificationResponse response) {
+                        ClassificationGetAllResponse response) {
         if (sseBroadcaster != null) {
             final OutboundSseEvent sseEvent = sse.newEventBuilder()
                     .id(response.getId().toString())
@@ -29,6 +35,14 @@ public class SSEService {
         }
     }
 
+    /**
+     * Register SseEventSink instance to SseBroadcaster allowing it to consume events over time.
+     *
+     * @param sse            SSE API
+     * @param sseBroadcaster SSE broadcasting facility
+     * @param sseEventSink   Outbound SSE stream
+     * @return SseBroadcaster
+     */
     public SseBroadcaster consume(Sse sse,
                                   SseBroadcaster sseBroadcaster,
                                   SseEventSink sseEventSink) {

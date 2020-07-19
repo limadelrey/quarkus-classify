@@ -8,10 +8,13 @@ import java.util.UUID;
 @Data
 public class ClassificationRequestPayload {
 
-    @JsonProperty(value = "id")
+    private static final String ID_FIELD = "id";
+    private static final String URL_FIELD = "url";
+
+    @JsonProperty(value = ID_FIELD)
     private final UUID id;
 
-    @JsonProperty(value = "url")
+    @JsonProperty(value = URL_FIELD)
     private final String url;
 
 }

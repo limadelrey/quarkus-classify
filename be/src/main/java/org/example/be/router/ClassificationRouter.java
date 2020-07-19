@@ -8,22 +8,20 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.example.be.model.json.ClassificationGetAllResponse;
+import org.example.be.model.json.ClassificationGetByIdResponse;
 import org.example.be.model.json.ClassificationRequest;
-import org.example.be.model.json.ClassificationResponse;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@Tag(name = "Image classification API", description = "Endpoints regarding image classification")
+@Tag(name = "Image classification API", description = "Endpoints regarding image classifications")
 @Path("/api/v1/image-classification")
 public interface ClassificationRouter {
 
@@ -36,7 +34,7 @@ public interface ClassificationRouter {
                     responseCode = "200",
                     name = "success",
                     description = "Success",
-                    content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = ClassificationResponse.class, type = SchemaType.ARRAY))
+                    content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = ClassificationGetAllResponse.class, type = SchemaType.ARRAY))
             ),
             @APIResponse(
                     responseCode = "500",
@@ -56,7 +54,7 @@ public interface ClassificationRouter {
                     responseCode = "200",
                     name = "success",
                     description = "Success",
-                    content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = ClassificationResponse.class))
+                    content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = ClassificationGetByIdResponse.class))
             ),
             @APIResponse(
                     responseCode = "400",

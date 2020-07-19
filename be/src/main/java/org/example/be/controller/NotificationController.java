@@ -8,8 +8,8 @@ import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.opentracing.Traced;
-import org.example.be.model.json.ClassificationResponse;
-import org.example.be.router.ClassificationResultRouter;
+import org.example.be.model.json.ClassificationGetAllResponse;
+import org.example.be.router.NotificationRouter;
 import org.example.be.service.SSEService;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,9 +21,9 @@ import javax.ws.rs.sse.SseEventSink;
 
 @Traced
 @ApplicationScoped
-public class ClassificationResultController implements ClassificationResultRouter {
+public class NotificationController implements NotificationRouter {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(ClassificationResultController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(NotificationController.class);
 
     private Sse sse;
     private SseBroadcaster sseBroadcaster = null;
@@ -38,12 +38,12 @@ public class ClassificationResultController implements ClassificationResultRoute
 
     /**
      * Consumes data from "produce-sse-notification" address on event bus.
-     * Event is then used to produce a sse notification.
+     * Event is then used to produce a SSE notification.
      *
      * @param message Message w/ classification
      */
     @ConsumeEvent(value = "produce-sse-notification")
-    public void create(Message<ClassificationResponse> message) {
+    public void create(Message<ClassificationGetAllResponse> message) {
         LOGGER.info("create() method called");
 
         sseService.produce(sse, sseBroadcaster, message.body());

@@ -12,25 +12,25 @@ import javax.inject.Inject;
 
 @Traced
 @ApplicationScoped
-public class ClassificationResultService {
+public class ClassificationReplyService {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(ClassificationResultService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(ClassificationReplyService.class);
 
     @Inject
     EventBus bus;
 
     /**
-     * Consumes data from "classification-result" Kafka topic.
-     * Event is then sent to event bus through "update-classification-result" address.
+     * Consumes data from "classification-reply" Kafka topic.
+     * Event is then sent to event bus through "update-classification" address.
      *
-     * @param event Classification result event
+     * @param event Classification reply event
      */
-    @Incoming("classification")
+    @Incoming("classification-reply")
     public void consume(ClassificationReplyEvent event) {
         LOGGER.info("consume() method called");
         LOGGER.info(event.toString());
 
-        bus.sendAndForget("update-classification-result", event);
+        bus.sendAndForget("update-classification", event);
     }
 
 }

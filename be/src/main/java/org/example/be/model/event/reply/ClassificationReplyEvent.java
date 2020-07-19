@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Data
@@ -15,16 +16,17 @@ public class ClassificationReplyEvent {
     private static final String TAGS_FIELD = "tags";
 
     @JsonProperty(value = ID_FIELD)
-    private String id;
+    private UUID id;
 
     @JsonProperty(value = STATUS_FIELD)
     private ClassificationStatusEnum status;
 
     @JsonProperty(value = TAGS_FIELD)
-    private List<ClassificationTags> tags;
+    private List<ClassificationTag> tags;
 
+    @NoArgsConstructor
     @Data
-    public class ClassificationTags {
+    public static class ClassificationTag {
 
         private static final String NAME_FIELD = "name";
         private static final String CONFIDENCE_FIELD = "confidence";
