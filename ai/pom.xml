@@ -15,16 +15,10 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-resteasy-jackson -->
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-jackson -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-jackson</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-hibernate-validator -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-validator</artifactId>
+            <artifactId>quarkus-jackson</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-reactive-messaging-kafka -->
@@ -33,28 +27,16 @@
             <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-vertx -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-vertx</artifactId>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-health -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-health</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-metrics -->
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-opentracing -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-metrics</artifactId>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-openapi -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-openapi</artifactId>
+            <artifactId>quarkus-smallrye-opentracing</artifactId>
         </dependency>
     </dependencies>
 
