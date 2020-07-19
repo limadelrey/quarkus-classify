@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-lg btn-block btn-dark text-white">Submit</button>
+                    <button id="submit" type="submit" class="btn btn-lg btn-block btn-dark text-white">Submit</button>
                 </div>
             </form>
         </div>
@@ -42,6 +42,8 @@
     // Really necessary since MultipartFormDataInput needs that each field is encoded individually
     $("form").submit(function() {
         event.preventDefault();
+
+        $("#submit").append("<i class='fa fa-refresh fa-spin align-middle float-right'></i>");
 
         var formData = new FormData();
 
@@ -60,6 +62,7 @@
             },
             error: function(error) {
                 alert("Error trying to create image classification");
+                location.reload();
             }
         })
     })
