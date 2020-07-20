@@ -1,0 +1,484 @@
+{
+  "result": {
+    "tags": [
+      {
+        "confidence": 75.5640411376953,
+        "tag": {
+          "en": "patio"
+        }
+      },
+      {
+        "confidence": 59.8976135253906,
+        "tag": {
+          "en": "area"
+        }
+      },
+      {
+        "confidence": 50.0617027282715,
+        "tag": {
+          "en": "structure"
+        }
+      },
+      {
+        "confidence": 46.6889419555664,
+        "tag": {
+          "en": "architecture"
+        }
+      },
+      {
+        "confidence": 34.9993057250977,
+        "tag": {
+          "en": "building"
+        }
+      },
+      {
+        "confidence": 31.2862548828125,
+        "tag": {
+          "en": "sky"
+        }
+      },
+      {
+        "confidence": 30.7952919006348,
+        "tag": {
+          "en": "city"
+        }
+      },
+      {
+        "confidence": 28.1966552734375,
+        "tag": {
+          "en": "travel"
+        }
+      },
+      {
+        "confidence": 28.0813426971436,
+        "tag": {
+          "en": "tourism"
+        }
+      },
+      {
+        "confidence": 27.3244037628174,
+        "tag": {
+          "en": "tree"
+        }
+      },
+      {
+        "confidence": 24.4172763824463,
+        "tag": {
+          "en": "house"
+        }
+      },
+      {
+        "confidence": 20.7087383270264,
+        "tag": {
+          "en": "water"
+        }
+      },
+      {
+        "confidence": 20.2257213592529,
+        "tag": {
+          "en": "old"
+        }
+      },
+      {
+        "confidence": 19.5003223419189,
+        "tag": {
+          "en": "town"
+        }
+      },
+      {
+        "confidence": 18.8024425506592,
+        "tag": {
+          "en": "history"
+        }
+      },
+      {
+        "confidence": 18.6162738800049,
+        "tag": {
+          "en": "landscape"
+        }
+      },
+      {
+        "confidence": 18.3694496154785,
+        "tag": {
+          "en": "home"
+        }
+      },
+      {
+        "confidence": 18.1061687469482,
+        "tag": {
+          "en": "garden"
+        }
+      },
+      {
+        "confidence": 18.027271270752,
+        "tag": {
+          "en": "summer"
+        }
+      },
+      {
+        "confidence": 17.4147262573242,
+        "tag": {
+          "en": "grass"
+        }
+      },
+      {
+        "confidence": 17.2803344726562,
+        "tag": {
+          "en": "stone"
+        }
+      },
+      {
+        "confidence": 17.048490524292,
+        "tag": {
+          "en": "religion"
+        }
+      },
+      {
+        "confidence": 16.5401668548584,
+        "tag": {
+          "en": "palace"
+        }
+      },
+      {
+        "confidence": 16.5244369506836,
+        "tag": {
+          "en": "residence"
+        }
+      },
+      {
+        "confidence": 15.683765411377,
+        "tag": {
+          "en": "exterior"
+        }
+      },
+      {
+        "confidence": 14.7469654083252,
+        "tag": {
+          "en": "vacation"
+        }
+      },
+      {
+        "confidence": 14.7182598114014,
+        "tag": {
+          "en": "ancient"
+        }
+      },
+      {
+        "confidence": 14.5453319549561,
+        "tag": {
+          "en": "culture"
+        }
+      },
+      {
+        "confidence": 14.4672164916992,
+        "tag": {
+          "en": "roof"
+        }
+      },
+      {
+        "confidence": 14.3805856704712,
+        "tag": {
+          "en": "residential"
+        }
+      },
+      {
+        "confidence": 14.2651100158691,
+        "tag": {
+          "en": "estate"
+        }
+      },
+      {
+        "confidence": 13.8585042953491,
+        "tag": {
+          "en": "villa"
+        }
+      },
+      {
+        "confidence": 13.8213415145874,
+        "tag": {
+          "en": "street"
+        }
+      },
+      {
+        "confidence": 13.7074499130249,
+        "tag": {
+          "en": "construction"
+        }
+      },
+      {
+        "confidence": 13.1915283203125,
+        "tag": {
+          "en": "park"
+        }
+      },
+      {
+        "confidence": 13.1222629547119,
+        "tag": {
+          "en": "urban"
+        }
+      },
+      {
+        "confidence": 12.8788204193115,
+        "tag": {
+          "en": "luxury"
+        }
+      },
+      {
+        "confidence": 12.8294620513916,
+        "tag": {
+          "en": "tourist"
+        }
+      },
+      {
+        "confidence": 12.6553497314453,
+        "tag": {
+          "en": "landmark"
+        }
+      },
+      {
+        "confidence": 12.5070009231567,
+        "tag": {
+          "en": "village"
+        }
+      },
+      {
+        "confidence": 12.4873723983765,
+        "tag": {
+          "en": "traditional"
+        }
+      },
+      {
+        "confidence": 12.3016748428345,
+        "tag": {
+          "en": "buildings"
+        }
+      },
+      {
+        "confidence": 12.2722911834717,
+        "tag": {
+          "en": "temple"
+        }
+      },
+      {
+        "confidence": 12.1980104446411,
+        "tag": {
+          "en": "holiday"
+        }
+      },
+      {
+        "confidence": 11.8186883926392,
+        "tag": {
+          "en": "brick"
+        }
+      },
+      {
+        "confidence": 11.575083732605,
+        "tag": {
+          "en": "trees"
+        }
+      },
+      {
+        "confidence": 11.2238063812256,
+        "tag": {
+          "en": "wall"
+        }
+      },
+      {
+        "confidence": 11.207103729248,
+        "tag": {
+          "en": "sunny"
+        }
+      },
+      {
+        "confidence": 10.7144222259521,
+        "tag": {
+          "en": "outdoor"
+        }
+      },
+      {
+        "confidence": 10.5077772140503,
+        "tag": {
+          "en": "fountain"
+        }
+      },
+      {
+        "confidence": 10.4524612426758,
+        "tag": {
+          "en": "real"
+        }
+      },
+      {
+        "confidence": 10.2497262954712,
+        "tag": {
+          "en": "resort hotel"
+        }
+      },
+      {
+        "confidence": 10.1839647293091,
+        "tag": {
+          "en": "church"
+        }
+      },
+      {
+        "confidence": 10.0958280563354,
+        "tag": {
+          "en": "historic"
+        }
+      },
+      {
+        "confidence": 9.98354530334473,
+        "tag": {
+          "en": "university"
+        }
+      },
+      {
+        "confidence": 9.96910381317139,
+        "tag": {
+          "en": "maze"
+        }
+      },
+      {
+        "confidence": 9.94687938690186,
+        "tag": {
+          "en": "road"
+        }
+      },
+      {
+        "confidence": 9.85692501068115,
+        "tag": {
+          "en": "tower"
+        }
+      },
+      {
+        "confidence": 9.52115058898926,
+        "tag": {
+          "en": "statue"
+        }
+      },
+      {
+        "confidence": 9.33069801330566,
+        "tag": {
+          "en": "castle"
+        }
+      },
+      {
+        "confidence": 9.28302669525146,
+        "tag": {
+          "en": "plants"
+        }
+      },
+      {
+        "confidence": 9.23789405822754,
+        "tag": {
+          "en": "flower"
+        }
+      },
+      {
+        "confidence": 8.6436243057251,
+        "tag": {
+          "en": "spring"
+        }
+      },
+      {
+        "confidence": 8.5869607925415,
+        "tag": {
+          "en": "panorama"
+        }
+      },
+      {
+        "confidence": 8.4947681427002,
+        "tag": {
+          "en": "lawn"
+        }
+      },
+      {
+        "confidence": 8.47606754302979,
+        "tag": {
+          "en": "historical"
+        }
+      },
+      {
+        "confidence": 8.42812252044678,
+        "tag": {
+          "en": "destination"
+        }
+      },
+      {
+        "confidence": 8.32069969177246,
+        "tag": {
+          "en": "cathedral"
+        }
+      },
+      {
+        "confidence": 8.08988285064697,
+        "tag": {
+          "en": "coast"
+        }
+      },
+      {
+        "confidence": 7.90333604812622,
+        "tag": {
+          "en": "resort"
+        }
+      },
+      {
+        "confidence": 7.88993310928345,
+        "tag": {
+          "en": "landscaping"
+        }
+      },
+      {
+        "confidence": 7.7577109336853,
+        "tag": {
+          "en": "cloud"
+        }
+      },
+      {
+        "confidence": 7.6006031036377,
+        "tag": {
+          "en": "center"
+        }
+      },
+      {
+        "confidence": 7.45293045043945,
+        "tag": {
+          "en": "famous"
+        }
+      },
+      {
+        "confidence": 7.33175563812256,
+        "tag": {
+          "en": "island"
+        }
+      },
+      {
+        "confidence": 7.29612112045288,
+        "tag": {
+          "en": "new"
+        }
+      },
+      {
+        "confidence": 7.27654123306274,
+        "tag": {
+          "en": "dwelling"
+        }
+      },
+      {
+        "confidence": 7.12622261047363,
+        "tag": {
+          "en": "river"
+        }
+      },
+      {
+        "confidence": 7.03374290466309,
+        "tag": {
+          "en": "intersection"
+        }
+      }
+    ]
+  },
+  "status": {
+    "text": "",
+    "type": "success"
+  }
+}

@@ -1,10 +1,18 @@
 package org.example.ai.service;
 
+import io.quarkus.runtime.StartupEvent;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.opentracing.Traced;
 import org.example.ai.model.entity.ClassificationTag;
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.Value;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 @Traced
@@ -24,11 +32,18 @@ public class ImageClassificationService {
     @ConfigProperty(name = "api.auth")
     String apiAuth;
 
-    /*private static Context context = Context.newBuilder().allowIO(true).allowAllAccess(true).build();
-    private static boolean effectPyLoaded = false;*/
+    private Context context;
+    private static boolean effectPyLoaded = false;
+
+    private Engine engine;
+
+    void onStart(@Observes StartupEvent event) {
+        engine = Engine.create();
+        context = Context.newBuilder().engine(engine).allowCreateThread(true).allowNativeAccess(true).allowIO(true).allowAllAccess(true).build();
+    }
 
     public List<ClassificationTag> execute(String url) {
-        /*if (!effectPyLoaded) {
+        if (!effectPyLoaded) {
             final URL pythonFile = getClass().getClassLoader().getResource(PYTHON_FILE);
 
             try {
@@ -42,17 +57,17 @@ public class ImageClassificationService {
         }
 
         final Value tagsMethod = context.getBindings(PYTHON).getMember(PYTHON_METHOD_NAME);
-        final String tagsResult = tagsMethod.execute(apiKey, apiSecret, authorization, url).asString();*/
+        final String tagsResult = tagsMethod.execute(url).asString();
 
         // Simulate error
         // return Collections.emptyList();
 
         // Simulate success
-        try {
+/*        try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return getStaticListWithClassificationTags();
     }
