@@ -29,10 +29,10 @@ public class ClassificationController {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("new-classification")
-    public Response add(MultipartFormDataInput input) {
+    public Response create(MultipartFormDataInput input) {
         LOGGER.info("add() method called");
 
-        classificationService.create(multipartFormDataService.getClassificationRequest(input));
+        classificationService.create(multipartFormDataService.buildClassificationRequest(input));
 
         return Response
                 .status(301)

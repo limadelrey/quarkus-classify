@@ -3,7 +3,7 @@ version: '3.8'
 services:
   quarkus-hackaton-ui-app:
     container_name: quarkus-hackaton-ui-app
-    image: quarkus/quarkus-hackaton-ui
+    image: quarkus-hackaton-ui-app
     build:
       context: .
       dockerfile: src/main/docker/Dockerfile.jvm

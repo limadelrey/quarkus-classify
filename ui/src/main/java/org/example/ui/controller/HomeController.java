@@ -33,8 +33,8 @@ public class HomeController {
     @Produces(MediaType.TEXT_HTML)
     @Counted(name = "indexCount", description = "How many render() calls have been performed")
     @Timed(name = "indexTime", description = "How long render() call takes to perform", unit = MetricUnits.MILLISECONDS)
-    public TemplateInstance render() {
-        LOGGER.info("render() method called");
+    public TemplateInstance renderMainPage() {
+        LOGGER.info("renderMainPage() method called");
 
         return template.data("classifications", classificationService.readAll());
     }

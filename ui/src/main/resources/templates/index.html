@@ -57,7 +57,7 @@
                         <td><span class="status status-error">&bull;</span> Error processing</td>
                         {/if}
                         <td>
-                            <a href="#" class="settings" title="Edit" data-toggle="modal" data-target="#readClassificationModal" data-id="{classification.id}"><i class="material-icons">&#xE8B8;</i></a>
+                            <a href="#" class="settings" title="Detail" data-toggle="modal" data-target="#readClassificationModal" data-id="{classification.id}"><i class="material-icons">search</i></a>
                             <a href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteClassificationModal" data-id="{classification.id}"><i class="material-icons">&#xE5C9;</i></a>
                         </td>
                     </tr>
@@ -66,7 +66,7 @@
                 </table>
 
                 <div class="clearfix">
-                    <div class="hint-text">Showing last <b>{classifications.size}</b> elements</div>
+                    <div class="hint-text">Showing last <b>{classifications.size}</b> element(s)</div>
                 </div>
             </div>
         </div>
@@ -74,18 +74,9 @@
 </body>
 
 <script>
-    // Send data-classification-id to modal submit button
-    $("#deleteClassificationModal").on("show.bs.modal", function(e) {
-        var classificationId = $(e.relatedTarget).data("id");
-
-        $("#submit-button").attr("data-classification-id", classificationId);
-    });
-
     // Get classification details and send them to modal
     var infoModal = $('#readClassificationModal');
     $('.settings').on('click', function(){
-        // e.preventDefault();
-
         $.ajax({
           type: "GET",
           url: "/read-classification/" + $(this).data("id"),
@@ -93,6 +84,36 @@
           success: function(data){
             // Set URL image
             infoModal.find("#url").attr("src", data.url);
+
+            // Set first tag
+            infoModal.find("#first-tag").text(data.tags[0].name);
+            infoModal.find("#first-tag-confidence").width(data.tags[0].confidence.toFixed(2) + "%");
+            infoModal.find("#first-tag-confidence-text").text(data.tags[0].confidence.toFixed(2) + "%");
+
+            // Set second tag
+            infoModal.find("#second-tag").text(data.tags[1].name);
+            infoModal.find("#second-tag-confidence").width(data.tags[1].confidence.toFixed(2) + "%");
+            infoModal.find("#second-tag-confidence-text").text(data.tags[1].confidence.toFixed(2) + "%");
+
+            // Set third tag
+            infoModal.find("#third-tag").text(data.tags[2].name);
+            infoModal.find("#third-tag-confidence").width(data.tags[2].confidence.toFixed(2) + "%");
+            infoModal.find("#third-tag-confidence-text").text(data.tags[2].confidence.toFixed(2) + "%");
+
+            // Set fourth tag
+            infoModal.find("#fourth-tag").text(data.tags[3].name);
+            infoModal.find("#fourth-tag-confidence").width(data.tags[3].confidence.toFixed(2) + "%");
+            infoModal.find("#fourth-tag-confidence-text").text(data.tags[3].confidence.toFixed(2) + "%");
+
+            // Set fifth tag
+            infoModal.find("#fifth-tag").text(data.tags[4].name);
+            infoModal.find("#fifth-tag-confidence").width(data.tags[4].confidence.toFixed(2) + "%");
+            infoModal.find("#fifth-tag-confidence-text").text(data.tags[4].confidence.toFixed(2) + "%");
+
+            // Set sixth tag
+            infoModal.find("#sixth-tag").text(data.tags[5].name);
+            infoModal.find("#sixth-tag-confidence").width(data.tags[5].confidence.toFixed(2) + "%");
+            infoModal.find("#sixth-tag-confidence-text").text(data.tags[5].confidence.toFixed(2) + "%");
 
             // Set title
             infoModal.find("#modalLabel").text("Read classification - " + data.name);
@@ -102,6 +123,13 @@
         });
 
         return false;
+    });
+
+    // Send data-classification-id to modal submit button
+    $("#deleteClassificationModal").on("show.bs.modal", function(e) {
+        var classificationId = $(e.relatedTarget).data("id");
+
+        $("#submit-button").attr("data-classification-id", classificationId);
     });
 
     // Consume notifications, reload page and create toast
