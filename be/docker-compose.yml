@@ -15,7 +15,7 @@ services:
 
   quarkus-hackaton-be-app:
     container_name: quarkus-hackaton-be-app
-    image: quarkus/quarkus-hackaton-be
+    image: quarkus-hackaton-be-app
     build:
       context: .
       dockerfile: src/main/docker/Dockerfile.jvm
