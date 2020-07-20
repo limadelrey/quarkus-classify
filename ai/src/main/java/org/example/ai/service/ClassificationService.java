@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Traced
 @ApplicationScoped
@@ -55,7 +56,10 @@ public class ClassificationService {
             isConsumed(requestEvent.getId());
 
             // Perform image classification using Python code (Polyglot API)
-            final List<ClassificationTag> tags = imageClassificationInPythonService.execute(requestEvent.getUrl());
+            final List<ClassificationTag> tags = imageClassificationInPythonService.execute(requestEvent.getUrl())
+                    .stream()
+                    .limit(6)
+                    .collect(Collectors.toList());
 
             // Create reply event
             final ClassificationReplyEvent replyEvent = buildClassificationReplyPayload(requestEvent.getId(), tags);
