@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import org.eclipse.microprofile.opentracing.Traced;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.example.ai.model.entity.ClassificationStatusEnum;
@@ -21,9 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-@Traced
 @ApplicationScoped
 public class ClassificationService {
 
@@ -56,10 +53,7 @@ public class ClassificationService {
             isConsumed(requestEvent.getId());
 
             // Perform image classification using Python code (Polyglot API)
-            final List<ClassificationTag> tags = imageClassificationInPythonService.execute(requestEvent.getUrl())
-                    .stream()
-                    .limit(6)
-                    .collect(Collectors.toList());
+            final List<ClassificationTag> tags = imageClassificationInPythonService.execute();
 
             // Create reply event
             final ClassificationReplyEvent replyEvent = buildClassificationReplyPayload(requestEvent.getId(), tags);

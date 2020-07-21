@@ -18,7 +18,7 @@
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-jackson -->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jackson</artifactId>
+            <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-reactive-messaging-kafka -->
@@ -32,12 +32,35 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-health</artifactId>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-opentracing -->
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-opentracing</artifactId>
-        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.quarkus</groupId>
+                        <artifactId>quarkus-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>native-image</goal>
+                                </goals>
+                                <configuration>
+                                    <enableHttpUrlHandler>true</enableHttpUrlHandler>
+                                    <additionalBuildArgs>
+                                        <additionalBuildArg>-Dfile.encoding=utf-8</additionalBuildArg>
+                                        <additionalBuildArg>-J-Xmx8G</additionalBuildArg>
+                                        <additionalBuildArg>--language:python</additionalBuildArg>
+                                    </additionalBuildArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
