@@ -106,9 +106,9 @@ public interface ClassificationRouter {
     @Operation(summary = "Delete one image classification")
     @APIResponses({
             @APIResponse(
-                    responseCode = "200",
+                    responseCode = "204",
                     name = "success",
-                    description = "Success"
+                    description = "No content"
             ),
             @APIResponse(
                     responseCode = "400",
