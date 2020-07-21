@@ -1,11 +1,13 @@
 package org.example.ai.model.event.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
+@RegisterForReflection
 public class ClassificationRequestEvent {
 
     public static final String ID_FIELD = "id";

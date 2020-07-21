@@ -1,6 +1,7 @@
 package org.example.ai.model.event.reply;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
 import org.example.ai.model.entity.ClassificationStatusEnum;
 import org.example.ai.model.entity.ClassificationTag;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@RegisterForReflection
 public class ClassificationReplyEvent {
 
     private static final String ID_FIELD = "id";
