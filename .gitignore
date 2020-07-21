@@ -12,3 +12,7 @@ target/
 
 # Python
 **/__pycache__
+
+documentation/
+infrastructure/k8s/
+infrastructure/docker-compose.yml
