@@ -22,6 +22,14 @@ $ docker network create quarkus-hackaton-network
 $ docker-compose up
 ```
 
+## Run BE source connector properties:
+https://github.com/limadelrey/quarkus-hackaton/blob/master/infrastructure/be-source-connector.properties
+
+Open http://localhost:3030 (sometimes it takes ~2 minutes to run)
+
+Open Connectors > New > PostgresConnector >  Paste "be-source-connector.properties" content > Create
+
+
 ## Run UI application w/ live reload:
 ```bash
 $ mvn compile quarkus:dev
