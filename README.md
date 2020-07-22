@@ -9,6 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 Java 11
 Maven 3.6.1
 Docker 19.03.5
+AWS S3 credentials
 ```
 
 # Running
