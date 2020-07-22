@@ -1,4 +1,5 @@
 # Getting Started
+https://www.youtube.com/watch?v=CZcoKflJwlw
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -17,7 +18,7 @@ Docker 19.03.5
 $ docker network create quarkus-hackaton-network
 ```
 
-## Run Docker Compose (setups all needed services):
+## Run Docker Compose (setup all needed services):
 ```bash
 $ docker-compose up
 ```
