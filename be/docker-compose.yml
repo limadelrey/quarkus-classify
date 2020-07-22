@@ -19,9 +19,8 @@ services:
     build:
       context: .
       dockerfile: src/main/docker/Dockerfile.jvm
-    environment:
-      AWS_ACCESS_KEY_ID: AKIA5F7ILMI3HA3GZP46
-      AWS_SECRET_ACCESS_KEY: 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
+    volumes:
+      - ~/.aws/credentials:/.aws/credentials:ro
     ports:
       - "8081:8081"
     depends_on:
