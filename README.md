@@ -1,4 +1,5 @@
 # Getting Started
+https://www.youtube.com/watch?v=CZcoKflJwlw
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -17,10 +18,20 @@ Docker 19.03.5
 $ docker network create quarkus-hackaton-network
 ```
 
-## Run Docker Compose (setups all needed services):
+## Run Docker Compose (setup all needed services):
 ```bash
 $ docker-compose up
 ```
+
+## Run BE source connector properties:
+https://github.com/limadelrey/quarkus-hackaton/blob/master/infrastructure/be-source-connector.properties
+
+Open http://localhost:3030 (sometimes it takes ~2 minutes to run)
+
+Open Connectors > New > PostgresConnector >  Paste "be-source-connector.properties" content > Create
+
+
+# Testing
 
 ## Run UI application w/ live reload:
 ```bash
@@ -29,7 +40,7 @@ $ mvn compile quarkus:dev
 
 ## Run BE application w/ live reload:
 ```bash
-$ mvn quarkus:dev -Ddebug=5006 -Daws.accessKeyId=AKIA5F7ILMI3DKUGAWUR -Daws.secretAccessKey=KU8TG5mMNKpoajB7B/8O1ycKeEGuO7gHSUquyl6E
+$ mvn quarkus:dev -Ddebug=5006 -Daws.accessKeyId={YOUR_ACCESS_KEY_ID} -Daws.secretAccessKey={YOUR_SECRET_ACCESS_KEY}
 ```
 
 ## Generate AI native image:
@@ -43,7 +54,7 @@ Run Apache Bench stress tests:
 $ ab -n 1000 -c 10 http://localhost:8081/api/v1/image-classification
 ```
 
-## Other informations
+# Other informations
 Useful endpoints:
 
 - POST http://localhost:8081/api/v1/image-classification
