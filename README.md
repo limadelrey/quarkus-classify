@@ -15,7 +15,7 @@ AWS S3 credentials
 # Running
 
 ## Setup AWS S3 credentials
-## https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_profiles.html
+https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_profiles.html
 ```
 1 - Create plain text file "credentials" on /.aws folder;
 2 - Paste the following content with your own credentials:
