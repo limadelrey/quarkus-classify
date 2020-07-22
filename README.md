@@ -40,7 +40,7 @@ $ mvn compile quarkus:dev
 
 ## Run BE application w/ live reload:
 ```bash
-$ mvn quarkus:dev -Ddebug=5006 -Daws.accessKeyId=AKIA5F7ILMI3DKUGAWUR -Daws.secretAccessKey=KU8TG5mMNKpoajB7B/8O1ycKeEGuO7gHSUquyl6E
+$ mvn quarkus:dev -Ddebug=5006 -Daws.accessKeyId={YOUR_ACCESS_KEY_ID} -Daws.secretAccessKey={YOUR_SECRET_ACCESS_KEY}
 ```
 
 ## Generate AI native image:
