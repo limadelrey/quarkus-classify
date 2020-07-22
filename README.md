@@ -13,6 +13,17 @@ Docker 19.03.5
 
 # Running
 
+## Setup AWS S3 credentials
+## https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials_profiles.html
+```
+1 - Create plain text file "credentials" on /.aws folder;
+2 - Paste the following content with your own credentials:
+[default]
+aws_access_key_id = YOUR_AWS_ACCESS_KEY_ID
+aws_secret_access_key = YOUR_AWS_SECRET_ACCESS_KEY
+```
+
+
 ## Create Docker network
 ```bash
 $ docker network create quarkus-hackaton-network
@@ -38,9 +49,10 @@ Open Connectors > New > PostgresConnector >  Paste "be-source-connector.properti
 $ mvn compile quarkus:dev
 ```
 
-## Run BE application w/ live reload:
+
+## Run BE application w/ live reload (don't forget to set your AWS S3 credentials file on /.aws/credentials location):
 ```bash
-$ mvn quarkus:dev -Ddebug=5006 -Daws.accessKeyId={YOUR_ACCESS_KEY_ID} -Daws.secretAccessKey={YOUR_SECRET_ACCESS_KEY}
+$ mvn compile quarkus:dev
 ```
 
 ## Generate AI native image:
